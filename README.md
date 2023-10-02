@@ -1,2 +1,1 @@
-# Yu-Gi-Oh-Deck-Analysis
- 
+# Yu-Gi-Oh! Deck Analysis
