@@ -3,13 +3,12 @@
  * GitHub: https://github.com/rkp1503
  */
 
-
 import YuGiOh.Deck;
+import Archetypes.DD.combos_dd;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -17,18 +16,14 @@ import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
 
-
 public class Main {
-
-
-	static final int TEST_HANDS = 1_000_000;
-
+	static final int TEST_HANDS = 100_000;
 
 	private static LinkedHashMap<Integer, JSONObject> get_database() throws IOException, JSONException {
 		LinkedHashMap<Integer, JSONObject> database = new LinkedHashMap<>();
 		String path_to_db = System.getProperty("user.dir") + "/src/main/resources/database.json";
 		File database_file = new File(path_to_db);
-		if (!database_file.createNewFile()) {
+		if (database_file.exists()) {
 			FileInputStream stream = new FileInputStream(path_to_db);
 			JSONObject db_json = new JSONObject(IOUtils.toString(stream));
 			var keys = db_json.keys();
@@ -39,7 +34,6 @@ public class Main {
 		}
 		return database;
 	}
-
 
 	private static Deck create_deck(String path_to_deck, LinkedHashMap<Integer, JSONObject> database) throws IOException, JSONException {
 		String website = "https://db.ygoprodeck.com/api/v7/cardinfo.php";
@@ -95,7 +89,6 @@ public class Main {
 		return database_bridge;
 	}
 
-
 	public static void main(String[] args) throws JSONException, IOException {
 		// Terminates the program if the user has not provided any arguments
 		if (args.length < 1) {
@@ -121,12 +114,13 @@ public class Main {
 		Deck deck = create_deck(path_to_deck, database);
 		LinkedHashMap<String, Integer> database_helper = get_database_bridge(database);
 		// Add all relevant combos
+		combos_dd.add_anime_combos(deck, database);
 		// Analyze the deck and print the results
-		System.out.println("Analyzing Deck...");
 		double time_start = System.currentTimeMillis() / 1000.0;
 		deck.analyze(TEST_HANDS, database, database_helper);
 		double time_end = System.currentTimeMillis() / 1000.0;
-		System.out.println("Deck analyzed, and simulated " + String.format("%,d", TEST_HANDS) + " test hands in " + (time_end - time_start) + " seconds");
+		System.out.println("Finished analyzing the deck in " + String.format("%.2f", time_end - time_start) + " seconds, simulating " + String.format("%,d", TEST_HANDS) + " test hands and tested " + deck.get_combo_line_count() + " combo lines.");
 		deck.print_analysis(TEST_HANDS, 3);
+		// ComboLine combo_line = new ComboLine(combo_hand_1::lamia_line_1, "");
 	}
 }
