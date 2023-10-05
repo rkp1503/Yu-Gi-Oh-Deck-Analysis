@@ -145,22 +145,41 @@ public class Deck {
 	}
 
 	public void print_analysis(int n) {
-		print_analysis_helper(n, 1, false);
+		print_analysis_helper(n, 1, false, -1);
 	}
 
 	public void print_analysis(int n, int analysis_level) {
-		print_analysis_helper(n, analysis_level, false);
+		print_analysis_helper(n, analysis_level, false, -1);
 	}
 
 	public void print_analysis(int n, boolean detailed) {
-		print_analysis_helper(n, 1, detailed);
+		print_analysis_helper(n, 1, detailed, -1);
+	}
+
+	public void print_analysis(int n, double elapsed_time) {
+		print_analysis_helper(n, 1, false, elapsed_time);
+	}
+
+	public void print_analysis(int n, int analysis_level, double elapsed_time) {
+		print_analysis_helper(n, analysis_level, false, elapsed_time);
+	}
+
+	public void print_analysis(int n, boolean detailed, double elapsed_time) {
+		print_analysis_helper(n, 1, detailed, elapsed_time);
 	}
 
 	public void print_analysis(int n, int analysis_level, boolean detailed) {
-		print_analysis_helper(n, analysis_level, detailed);
+		print_analysis_helper(n, analysis_level, detailed, -1);
 	}
 
-	private void print_analysis_helper(int n, int analysis_level, boolean detailed) {
+	public void print_analysis(int n, int analysis_level, boolean detailed, double elapsed_time) {
+		print_analysis_helper(n, analysis_level, detailed, elapsed_time);
+	}
+
+	private void print_analysis_helper(int n, int analysis_level, boolean detailed, double elapsed_time) {
+		if (elapsed_time >= 0) {
+			System.out.println("Finished analyzing the deck in " + String.format("%.2f", elapsed_time) + " seconds, simulating " + String.format("%,d", n) + " test hands and tested " + get_combo_line_count() + " combo lines.\n");
+		}
 		if (detailed) {
 			System.out.println("[A / B / C]\nA: Probability of executing FC\nB: Probability of opening FC\nC: Probability of executing FC if opened FC\n");
 		}
