@@ -1,8 +1,6 @@
 /**
  * Author: Rayla Kurosaki
  * GitHub: https://github.com/rkp1503
- * Working Directory:
- * Command:
  */
 package YuGiOh;
 
