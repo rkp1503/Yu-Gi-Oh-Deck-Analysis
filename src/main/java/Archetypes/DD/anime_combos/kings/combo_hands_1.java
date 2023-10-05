@@ -18,9 +18,15 @@ import java.util.List;
 public class combo_hands_1 {
 	static ArrayList<ArrayList<String>> get_starting_hands() {
 		return new ArrayList<>(Arrays.asList(
-				new ArrayList<>(Arrays.asList("D/D Savant Kepler", "D/D Swirl Slime", "D/D Savant Copernicus")),
-				new ArrayList<>(Arrays.asList("D/D Savant Kepler", "D/D Swirl Slime", "D/D Gryphon")),
-				new ArrayList<>(Arrays.asList("D/D Savant Kepler", "D/D Savant Copernicus", "D/D Gryphon"))
+			new ArrayList<>(Arrays.asList(
+				"D/D Savant Kepler", "D/D Swirl Slime", "D/D Savant Copernicus"
+			)),
+			new ArrayList<>(Arrays.asList(
+				"D/D Savant Kepler", "D/D Swirl Slime", "D/D Gryphon"
+			)),
+			new ArrayList<>(Arrays.asList(
+				"D/D Savant Kepler", "D/D Savant Copernicus", "D/D Gryphon"
+			))
 		));
 	}
 
@@ -54,7 +60,7 @@ public class combo_hands_1 {
 		}
 		utils.activate_spell_trap_from_hand(card, hand);
 		ArrayList<String> gate_targets = new ArrayList<>(Arrays.asList(
-				"D/D Swirl Slime", "D/D Savant Copernicus", "D/D Gryphon"
+			"D/D Swirl Slime", "D/D Savant Copernicus", "D/D Gryphon"
 		));
 		String missing_piece = utils.get_missing_piece(combo_cards, gate_targets);
 		if (!utils_dd.gate_search_dd(missing_piece, hand, main_deck)){
@@ -89,7 +95,7 @@ public class combo_hands_1 {
 			}
 		}
 		ArrayList<String> cards = new ArrayList<>(Arrays.asList(
-				"D/D/D Gust King Alexander", "D/D/D Wave King Caesar"
+			"D/D/D Gust King Alexander", "D/D/D Wave King Caesar"
 		));
 		for (String card_lst : cards) {
 			if (!utils.extra_deck_summon(card_lst, extra_deck)) {
