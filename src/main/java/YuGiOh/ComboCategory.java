@@ -2,38 +2,37 @@
  * Author: Rayla Kurosaki
  * GitHub: https://github.com/rkp1503
  */
-
-
 package YuGiOh;
 
-
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.javatuples.Pair;
-
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-
 public class ComboCategory {
-	private String combo_category = "";
-	private final ArrayList<ComboSubCategory> combo_subcategories = new ArrayList<>();
-	private int combo_in_hand_count = 0;
-	private int full_combo_count = 0;
+	private final String combo_category;
+	private final ArrayList<ComboSubCategory> combo_subcategories;
+	private int combo_in_hand_count;
+	private int full_combo_count;
+
+	public ComboCategory(String combo_category) {
+		this.combo_category = combo_category;
+		this.combo_subcategories = new ArrayList<>();
+		this.combo_in_hand_count = 0;
+		this.full_combo_count = 0;
+	}
 
 	private String get_combo_category() {
 		return this.combo_category;
 	}
 
-	private void set_combo_category(String combo_category) {
-		this.combo_category = combo_category;
-	}
-
-	private ArrayList<ComboSubCategory> get_combo_subcategories() {
+	ArrayList<ComboSubCategory> get_combo_subcategories() {
 		return this.combo_subcategories;
 	}
 
-	private void add_combo_category(ComboSubCategory combo_subcategory) {
+	public void add_combo_category(ComboSubCategory combo_subcategory) {
 		this.combo_subcategories.add(combo_subcategory);
 	}
 
@@ -53,7 +52,7 @@ public class ComboCategory {
 		this.full_combo_count += 1;
 	}
 
-	Pair<Boolean, Boolean> test_hand(ArrayList<String> hand, ArrayList<String> main_deck, ArrayList<String> extra_deck, LinkedHashMap<Integer, JSONObject> db_main, LinkedHashMap<String, Integer> db_helper) {
+	Pair<Boolean, Boolean> test_hand(ArrayList<String> hand, ArrayList<String> main_deck, ArrayList<String> extra_deck, LinkedHashMap<Integer, JSONObject> db_main, LinkedHashMap<String, Integer> db_helper) throws JSONException {
 		ArrayList<Boolean> cih_lst = new ArrayList<>();
 		ArrayList<Boolean> fc_lst = new ArrayList<>();
 		for (ComboSubCategory combo_subcategory : this.combo_subcategories) {
@@ -74,7 +73,7 @@ public class ComboCategory {
 		return Pair.with(cih, fc);
 	}
 
-	void print_analysis(int n, int analysis_level, boolean detailed) {
+	void print_analysis(int n, int analysis_level) {
 		double p_a = (double) this.full_combo_count / n;
 		double p_b = (double) this.combo_in_hand_count / n;
 		double p_c;
@@ -83,10 +82,10 @@ public class ComboCategory {
 		} else {
 			p_c = -1;
 		}
-		System.out.println(this.combo_category + ": [" + String.format("%.2f", p_a) + " | " + String.format("%.2f", p_b) + " | " + String.format("%.2f", p_c) + "]");
+		System.out.println(this.combo_category + ": [" + String.format("%.2f", 100 * p_a) + "% | " + String.format("%.2f", 100 * p_b) + "% | " + String.format("%.2f", 100 * p_c) + "%]");
 		if (analysis_level > 1) {
 			for (ComboSubCategory combo_subcategory : this.combo_subcategories) {
-				combo_subcategory.print_analysis(n, analysis_level, detailed);
+				combo_subcategory.print_analysis(n, analysis_level);
 			}
 		}
 	}
