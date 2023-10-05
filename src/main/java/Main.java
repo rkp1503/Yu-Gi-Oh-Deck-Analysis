@@ -122,7 +122,6 @@ public class Main {
 		deck.analyze(TEST_HANDS, database, database_helper);
 		double time_end = System.currentTimeMillis() / 1000.0;
 		System.out.println("Finished analyzing the deck in " + String.format("%.2f", time_end - time_start) + " seconds, simulating " + String.format("%,d", TEST_HANDS) + " test hands and tested " + deck.get_combo_line_count() + " combo lines.");
-		deck.print_analysis(TEST_HANDS, 3);
-		// ComboLine combo_line = new ComboLine(combo_hand_1::lamia_line_1, "");
+		deck.print_analysis(TEST_HANDS);
 	}
 }
