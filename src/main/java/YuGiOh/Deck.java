@@ -2,29 +2,34 @@
  * Author: Rayla Kurosaki
  * GitHub: https://github.com/rkp1503
  */
-
-
 package YuGiOh;
 
-
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.javatuples.Pair;
-
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 
-
 public class Deck {
-	private final ArrayList<String> main_deck = new ArrayList<>();
-	private final ArrayList<String> extra_deck = new ArrayList<>();
-	private final ArrayList<String> side_deck = new ArrayList<>();
-	private final ArrayList<ComboCategory> combo_categories = new ArrayList<>();
-	private int combo_in_hand_count = 0;
-	private int full_combo_count = 0;
+	private final ArrayList<String> main_deck;
+	private final ArrayList<String> extra_deck;
+	private final ArrayList<String> side_deck;
+	private final ArrayList<ComboCategory> combo_categories;
+	private int combo_in_hand_count;
+	private int full_combo_count;
 
-	private ArrayList<String> get_main_deck() {
+	public Deck() {
+		this.main_deck = new ArrayList<>();
+		this.extra_deck = new ArrayList<>();
+		this.side_deck = new ArrayList<>();
+		this.combo_categories = new ArrayList<>();
+		this.combo_in_hand_count = 0;
+		this.full_combo_count = 0;
+	}
+
+	public ArrayList<String> get_main_deck() {
 		return this.main_deck;
 	}
 
@@ -77,18 +82,26 @@ public class Deck {
 		System.out.println(msg);
 	}
 
-	private ArrayList<String> copy_deck(ArrayList<String> src) {
-		ArrayList<String> cloned = new ArrayList<>();
-		Collections.copy(cloned, src);
-		return cloned;
+	private ArrayList<String> copy(ArrayList<String> src) {
+		return new ArrayList<>(src);
 	}
 
 	private ArrayList<ComboCategory> get_combo_categories() {
 		return this.combo_categories;
 	}
 
-	private void add_combo_category(ComboCategory combo_category) {
+	public void add_combo_category(ComboCategory combo_category) {
 		this.combo_categories.add(combo_category);
+	}
+
+	public int get_combo_line_count() {
+		int i = 0;
+		for (ComboCategory cc : this.combo_categories) {
+			for (ComboSubCategory csc : cc.get_combo_subcategories()) {
+				i += csc.get_combo_lines().size();
+			}
+		}
+		return i;
 	}
 
 	private int get_combo_in_hand_count() {
@@ -107,12 +120,12 @@ public class Deck {
 		this.full_combo_count += 1;
 	}
 
-	public void analyze(int n, LinkedHashMap<Integer, JSONObject> db_main, LinkedHashMap<String, Integer> db_helper) {
-		ArrayList<String> main_deck_src = copy_deck(this.main_deck);
+	public void analyze(int n, LinkedHashMap<Integer, JSONObject> db_main, LinkedHashMap<String, Integer> db_helper) throws JSONException {
+		ArrayList<String> main_deck_src = copy(this.main_deck);
 		for (int i = 0; i < n; i++) {
 			Collections.shuffle(main_deck_src);
 			ArrayList<String> hand = new ArrayList<>(main_deck_src.subList(0, 5));
-			ArrayList<String> main_deck = new ArrayList<>(main_deck_src.subList(5, main_deck_src.size() - 1));
+			ArrayList<String> main_deck = new ArrayList<>(main_deck_src.subList(5, main_deck_src.size()));
 			ArrayList<Boolean> cih_lst = new ArrayList<>();
 			ArrayList<Boolean> fc_lst = new ArrayList<>();
 			for (ComboCategory combo_category : this.combo_categories) {
@@ -131,23 +144,20 @@ public class Deck {
 		}
 	}
 
-	private void print_analysis(int n) {
+	public void print_analysis(int n) {
 		print_analysis_helper(n, 1, false);
 	}
 
 	public void print_analysis(int n, int analysis_level) {
 		print_analysis_helper(n, analysis_level, false);
-
 	}
 
-	private void print_analysis(int n, boolean detailed) {
+	public void print_analysis(int n, boolean detailed) {
 		print_analysis_helper(n, 1, detailed);
-
 	}
 
-	private void print_analysis(int n, int analysis_level, boolean detailed) {
+	public void print_analysis(int n, int analysis_level, boolean detailed) {
 		print_analysis_helper(n, analysis_level, detailed);
-
 	}
 
 	private void print_analysis_helper(int n, int analysis_level, boolean detailed) {
@@ -155,7 +165,7 @@ public class Deck {
 			System.out.println("[A / B / C]\nA: Probability of executing FC\nB: Probability of opening FC\nC: Probability of executing FC if opened FC\n");
 		}
 		for (ComboCategory category : this.combo_categories) {
-			category.print_analysis(n, analysis_level, detailed);
+			category.print_analysis(n, analysis_level);
 		}
 	}
 }
