@@ -117,11 +117,11 @@ public class Main {
 		LinkedHashMap<String, Integer> database_helper = get_database_bridge(database);
 		// Add all relevant combos
 		combos_dd.add_anime_combos(deck, database);
-		// Analyze the deck and print the results
+		// Analyze the deck
 		double time_start = System.currentTimeMillis() / 1000.0;
 		deck.analyze(TEST_HANDS, database, database_helper);
 		double time_end = System.currentTimeMillis() / 1000.0;
-		System.out.println("Finished analyzing the deck in " + String.format("%.2f", time_end - time_start) + " seconds, simulating " + String.format("%,d", TEST_HANDS) + " test hands and tested " + deck.get_combo_line_count() + " combo lines.");
-		deck.print_analysis(TEST_HANDS);
+		// Print the results
+		deck.print_analysis(TEST_HANDS, 3, time_end - time_start);
 	}
 }
