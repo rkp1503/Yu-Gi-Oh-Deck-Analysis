@@ -2,39 +2,37 @@
  * Author: Rayla Kurosaki
  * GitHub: https://github.com/rkp1503
  */
-
-
 package YuGiOh;
 
-
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.javatuples.Pair;
 
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 
-
 public class ComboSubCategory {
-	private String combo_sub_category = "";
-	private final ArrayList<ComboLine> combo_lines = new ArrayList<>();
-	private int combo_in_hand_count = 0;
-	private int full_combo_count = 0;
+	private final String combo_sub_category;
+	private final ArrayList<ComboLine> combo_lines;
+	private int combo_in_hand_count;
+	private int full_combo_count;
+
+	public ComboSubCategory(String combo_sub_category) {
+		this.combo_sub_category = combo_sub_category;
+		this.combo_lines = new ArrayList<>();
+		this.combo_in_hand_count = 0;
+		this.full_combo_count = 0;
+	}
 
 	private String get_combo_sub_category() {
 		return this.combo_sub_category;
 	}
 
-	private void set_combo_category(String combo_sub_category) {
-		this.combo_sub_category = combo_sub_category;
-	}
-
-	private ArrayList<ComboLine> get_combo_lines() {
+	ArrayList<ComboLine> get_combo_lines() {
 		return this.combo_lines;
 	}
 
-	private void add_combo_category(ComboLine combo_line) {
+	public void add_combo_category(ComboLine combo_line) {
 		this.combo_lines.add(combo_line);
 	}
 
@@ -55,12 +53,10 @@ public class ComboSubCategory {
 	}
 
 	private ArrayList<String> copy(ArrayList<String> src) {
-		ArrayList<String> cloned = new ArrayList<>();
-		Collections.copy(cloned, src);
-		return cloned;
+		return new ArrayList<>(src);
 	}
 
-	Pair<Boolean, Boolean> test_hand(ArrayList<String> hand, ArrayList<String> main_deck, ArrayList<String> extra_deck, LinkedHashMap<Integer, JSONObject> db_main, LinkedHashMap<String, Integer> db_helper) {
+	Pair<Boolean, Boolean> test_hand(ArrayList<String> hand, ArrayList<String> main_deck, ArrayList<String> extra_deck, LinkedHashMap<Integer, JSONObject> db_main, LinkedHashMap<String, Integer> db_helper) throws JSONException {
 		ArrayList<Boolean> cih_lst = new ArrayList<>();
 		ArrayList<Boolean> fc_lst = new ArrayList<>();
 		for (ComboLine combo_line : this.combo_lines) {
@@ -81,7 +77,7 @@ public class ComboSubCategory {
 		return Pair.with(cih, fc);
 	}
 
-	void print_analysis(int n, int analysis_level, boolean detailed) {
+	void print_analysis(int n, int analysis_level) {
 		double p_a = (double) this.full_combo_count / n;
 		double p_b = (double) this.combo_in_hand_count / n;
 		double p_c;
@@ -90,10 +86,10 @@ public class ComboSubCategory {
 		} else {
 			p_c = -1;
 		}
-		System.out.println(this.combo_sub_category + ": [" + String.format("%.2f", p_a) + " | " + String.format("%.2f", p_b) + " | " + String.format("%.2f", p_c) + "]");
+		System.out.println("\t" + this.combo_sub_category + ": [" + String.format("%.2f", 100 * p_a) + "% | " + String.format("%.2f", 100 * p_b) + "% | " + String.format("%.2f", 100 * p_c) + "%]");
 		if (analysis_level > 2) {
 			for (ComboLine combo_line : this.combo_lines) {
-				combo_line.print_analysis(n, analysis_level, detailed);
+				combo_line.print_analysis(n);
 			}
 		}
 	}
