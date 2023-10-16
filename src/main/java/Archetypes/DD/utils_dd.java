@@ -4,17 +4,14 @@
  */
 package Archetypes.DD;
 
-
 import YuGiOh.utils;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.javatuples.Pair;
 
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 public class utils_dd {
+
 	public static boolean kepler_search_contract(String card, ArrayList<String> hand, ArrayList<String> main_deck) {
 		return utils.add_card(card, hand, main_deck);
 	}
