@@ -14,16 +14,14 @@ import java.util.LinkedHashMap;
 public class ComboLine {
 	private final myFunc combo_function;
 	private final String combo_line;
-	private final ArrayList<ArrayList<String>> combo_cards_list;
-	private int combo_in_hand_count;
-	private int full_combo_count;
+	private final ArrayList<ArrayList<String>> starting_hands;
+	private int combo_in_hand_count = 0;
+	private int full_combo_count = 0;
 
-	public ComboLine(myFunc combo_function, String combo_line, ArrayList<ArrayList<String>> starting_hand) {
+	public ComboLine(myFunc combo_function, String combo_line, ArrayList<ArrayList<String>> starting_hands) {
 		this.combo_function = combo_function;
 		this.combo_line = combo_line;
-		this.combo_cards_list = starting_hand;
-		this.combo_in_hand_count = 0;
-		this.full_combo_count = 0;
+		this.starting_hands = starting_hands;
 	}
 
 	private myFunc get_combo_function() {
@@ -34,12 +32,12 @@ public class ComboLine {
 		return this.combo_line;
 	}
 
-	private ArrayList<ArrayList<String>> get_combo_cards_list() {
-		return this.combo_cards_list;
+	private ArrayList<ArrayList<String>> get_starting_hands() {
+		return this.starting_hands;
 	}
 
-	private void add_combo_cards_list(ArrayList<String> combo_cards) {
-		this.combo_cards_list.add(combo_cards);
+	private void add_starting_hand(ArrayList<String> starting_hand) {
+		this.starting_hands.add(starting_hand);
 	}
 
 	private int get_combo_in_hand_count() {
@@ -74,11 +72,10 @@ public class ComboLine {
 	Pair<Boolean, Boolean> test_hand(ArrayList<String> hand, ArrayList<String> main_deck, ArrayList<String> extra_deck, LinkedHashMap<Integer, JSONObject> db_main, LinkedHashMap<String, Integer> db_helper) throws JSONException {
 		boolean cih = false;
 		boolean fc = false;
-		for (ArrayList<String> combo_cards : this.combo_cards_list) {
+		for (ArrayList<String> combo_cards : this.starting_hands) {
 			if (is_combo_in_hand(hand, combo_cards)) {
-				ArrayList<String> hand_copy = copy(hand);
 				cih = true;
-				fc = this.combo_function.combo_line(copy(combo_cards), hand, main_deck, extra_deck, db_main, db_helper);
+				fc = this.combo_function.combo_line(copy(combo_cards), copy(hand), main_deck, extra_deck, db_main, db_helper);
 				if (fc) {
 					this.combo_in_hand_count += 1;
 					this.full_combo_count += 1;
@@ -101,6 +98,6 @@ public class ComboLine {
 		} else {
 			p_c = -1;
 		}
-		System.out.println("\t\t" + this.combo_line + ": [" + String.format("%.2f", 100 * p_a) + "% | " + String.format("%.2f", 100 * p_b) + "% | " + String.format("%.2f", 100 * p_c) + "%]");
+		System.out.println("\t\t" + this.combo_line + ": [" + String.format("%.3f", 100 * p_a) + "% | " + String.format("%.3f", 100 * p_b) + "% | " + String.format("%.3f", 100 * p_c) + "%]");
 	}
 }
