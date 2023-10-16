@@ -13,21 +13,12 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 
 public class Deck {
-	private final ArrayList<String> main_deck;
-	private final ArrayList<String> extra_deck;
-	private final ArrayList<String> side_deck;
-	private final ArrayList<ComboCategory> combo_categories;
-	private int combo_in_hand_count;
-	private int full_combo_count;
-
-	public Deck() {
-		this.main_deck = new ArrayList<>();
-		this.extra_deck = new ArrayList<>();
-		this.side_deck = new ArrayList<>();
-		this.combo_categories = new ArrayList<>();
-		this.combo_in_hand_count = 0;
-		this.full_combo_count = 0;
-	}
+	private final ArrayList<String> main_deck = new ArrayList<>();
+	private final ArrayList<String> extra_deck = new ArrayList<>();
+	private final ArrayList<String> side_deck = new ArrayList<>();
+	private final ArrayList<ComboCategory> combo_categories = new ArrayList<>();
+	private int combo_in_hand_count = 0;
+	private int full_combo_count = 0;
 
 	public ArrayList<String> get_main_deck() {
 		return this.main_deck;
@@ -178,7 +169,7 @@ public class Deck {
 
 	private void print_analysis_helper(int n, int analysis_level, boolean detailed, double elapsed_time) {
 		if (elapsed_time >= 0) {
-			System.out.println("Finished analyzing the deck in " + String.format("%.2f", elapsed_time) + " seconds, simulating " + String.format("%,d", n) + " test hands and tested " + get_combo_line_count() + " combo lines.\n");
+			System.out.println("Finished analyzing the deck in " + String.format("%.2f", elapsed_time) + " seconds, simulating " + String.format("%,d", n) + " test hands and \ntested " + get_combo_line_count() + " combo lines.\n");
 		}
 		if (detailed) {
 			System.out.println("[A / B / C]\nA: Probability of executing FC\nB: Probability of opening FC\nC: Probability of executing FC if opened FC\n");
