@@ -13,15 +13,12 @@ import java.util.LinkedHashMap;
 
 public class ComboSubCategory {
 	private final String combo_sub_category;
-	private final ArrayList<ComboLine> combo_lines;
-	private int combo_in_hand_count;
-	private int full_combo_count;
+	private final ArrayList<ComboLine> combo_lines = new ArrayList<>();
+	private int combo_in_hand_count = 0;
+	private int full_combo_count = 0;
 
 	public ComboSubCategory(String combo_sub_category) {
 		this.combo_sub_category = combo_sub_category;
-		this.combo_lines = new ArrayList<>();
-		this.combo_in_hand_count = 0;
-		this.full_combo_count = 0;
 	}
 
 	private String get_combo_sub_category() {
@@ -86,7 +83,7 @@ public class ComboSubCategory {
 		} else {
 			p_c = -1;
 		}
-		System.out.println("\t" + this.combo_sub_category + ": [" + String.format("%.2f", 100 * p_a) + "% | " + String.format("%.2f", 100 * p_b) + "% | " + String.format("%.2f", 100 * p_c) + "%]");
+		System.out.println("\t" + this.combo_sub_category + ": [" + String.format("%.3f", 100 * p_a) + "% | " + String.format("%.3f", 100 * p_b) + "% | " + String.format("%.3f", 100 * p_c) + "%]");
 		if (analysis_level > 2) {
 			for (ComboLine combo_line : this.combo_lines) {
 				combo_line.print_analysis(n);
