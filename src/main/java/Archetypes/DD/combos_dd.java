@@ -22,7 +22,7 @@ public class combos_dd {
 		for (ComboSubCategory csc : csc_lst) {
 			t_kings.add_combo_category(csc);
 		}
-		// ComboCategory emperors = new ComboCategory("Triple Emperors");
+		ComboCategory emperors = new ComboCategory("Triple Emperors");
 		ComboCategory super_dooms = new ComboCategory("Triple Super Dooms");
 		ArrayList<ComboCategory> cc_lst = new ArrayList<>(Arrays.asList(
 				t_kings
