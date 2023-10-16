@@ -15,12 +15,12 @@ import org.codehaus.jettison.json.JSONObject;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.LinkedHashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
-	static final int TEST_HANDS = 100_000;
-
+	// static final int TEST_HANDS = 10_000_000; // Accuracy level: xx.xy%
+	// static final int TEST_HANDS = 1_000_000; // Accuracy level: xx.yy%
+	static final int TEST_HANDS = 10_000;
 	private static LinkedHashMap<Integer, JSONObject> get_database() throws IOException, JSONException {
 		LinkedHashMap<Integer, JSONObject> database = new LinkedHashMap<>();
 		String path_to_db = System.getProperty("user.dir") + "/src/main/resources/database.json";
