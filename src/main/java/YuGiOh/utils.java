@@ -1,3 +1,7 @@
+/**
+ * Author: Rayla Kurosaki
+ * GitHub: https://github.com/rkp1503
+ */
 package YuGiOh;
 
 import org.codehaus.jettison.json.JSONException;
@@ -72,6 +76,24 @@ public class utils {
 			if (card_data.has("scale")) {
 				int scale = (int) card_data.get("scale");
 				if ((low <= scale) && (scale <= high)) {
+					return card;
+				}
+			}
+		}
+		return null;
+	}
+
+	public static void pendulum_summon_from_hand(ArrayList<String> monsters, ArrayList<String> hand) {
+		for (String monster : monsters) {
+			hand.remove(monster);
+		}
+	}
+
+	public static String find_card_by_level(int level, ArrayList<String> source, LinkedHashMap<Integer, JSONObject> db_main, LinkedHashMap<String, Integer> db_helper) throws JSONException {
+		for (String card : source) {
+			JSONObject card_data = db_main.get(db_helper.get(card));
+			if (card_data.has("level")) {
+				if ((int) card_data.get("level") == level) {
 					return card;
 				}
 			}
