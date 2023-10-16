@@ -12,5 +12,5 @@ import java.util.LinkedHashMap;
 
 @FunctionalInterface
 public interface myFunc {
-	boolean combo_line(ArrayList<String> combo_cards, ArrayList<String> hand, ArrayList<String> main_deck, ArrayList<String> extra_deck, LinkedHashMap<Integer, JSONObject> db_main, LinkedHashMap<String, Integer> db_helper) throws JSONException;
+	boolean combo_line(ArrayList<String> combo_hand, ArrayList<String> hand, ArrayList<String> main_deck, ArrayList<String> extra_deck, LinkedHashMap<Integer, JSONObject> db_main, LinkedHashMap<String, Integer> db_helper) throws JSONException;
 }
